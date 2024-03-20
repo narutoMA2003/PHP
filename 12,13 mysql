@@ -1,0 +1,78 @@
+<?php
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "workshop";
+
+$conn = new mysqli($host, $username, $password, $database);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+else{
+    echo"connected successfully";
+}
+
+// Check if the form is submitted for registering a student
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $empid = $_POST['empid'];
+    $empname= $_POST['empname'];
+    $designation= $_POST['designation'];
+    $salary = $_POST['salary'];
+
+
+    $sql = "INSERT INTO emp (empid, empname, designation, salary) 
+            VALUES ('$empid',$empname', '$designation', '$salary')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Student registered successfully!";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+// Fetch and display registered students
+$sql = "SELECT * FROM emp";
+$result = $conn->query($sql);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+</head>
+<body >
+    <div class="container-fluid" >
+        <div class="row bg-dark p-2">
+            <h3 class="text-white">PHP Project</h3>
+        </div>
+        <div class="row bg-info">
+            <div class="col-6">
+                <h2>Student Registration</h2>
+                <form action="" method="post">
+                    <label for="empid">Employee id:</label>
+                    <input type="number" name="empid" required><br>
+        
+                    <label for="empname">Employee Name::</label>
+                    <input type="text" name="empname" required><br>
+        
+                    <label for="designation">designation:</label>
+                    <input type="text" name="designation" required><br>
+        
+                    <label for="salary">salary:</label>
+                    <input type="number" name="salary" required><br>
+        
+                    <input type="submit" name="submit" required><br>
+                    
+            
+                </form>
+
+            </div>
+    
+    </div>
+</body>
+</html>
